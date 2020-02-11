@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Constants from 'expo-constants';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import pokeball from '../assets/pokeball.png'
 
 export default function HomePage(props) {
-
 
     return (
         <View style={styles.container}>
@@ -14,7 +13,7 @@ export default function HomePage(props) {
                 <Text>Test Home Page</Text>
                 <Text>Test Home Page</Text>
             </View>
-
+            <Image source={pokeball} style={{width: 30, height: '50%'}} />
         </View>
     )
 }

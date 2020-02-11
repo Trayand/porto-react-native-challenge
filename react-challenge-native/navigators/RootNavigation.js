@@ -19,14 +19,14 @@ export default function RootNavigation() {
     return (
         <Tab.Navigator initialRouteName="Pokehome">
             <Tab.Screen name="hai" component={Tes1} options={{
-                tabBarIcon: () => <MaterialCommunityIcons name="view-list" size={32} />
+                tabBarIcon: () => <MaterialCommunityIcons name="view-list" color="#363cff" size={32} />
             }} />
             <Tab.Screen name="Pokehome" component={HomePage} options={{
-                tabBarIcon: () => <MaterialCommunityIcons name="pokeball" size={32} />
+                tabBarIcon: () => <MaterialCommunityIcons name="pokeball" color="#363cff" size={32} />
             }}
             />
             <Tab.Screen name="dia" component={Tes3} options={{
-                tabBarIcon: () => <Ionicons name="ios-bookmark" size={32} />
+                tabBarIcon: () => <Ionicons name="ios-bookmark" color="#363cff" size={32} />
             }} />
         </Tab.Navigator>
     )
