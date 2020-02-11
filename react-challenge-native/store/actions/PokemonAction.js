@@ -4,7 +4,9 @@ import {
 } from '../actionTypes'
 
 export const AddPokemon = page => (dispatch, getState) => {
-
+    dispatch({
+        type: 'FETCH_REQUEST'
+    })
     fetch(page)
         .then((response) => {
             return response.json();

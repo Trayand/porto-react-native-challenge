@@ -10,33 +10,69 @@ export default function HomePage(props) {
     // const [nextPage, setNextPage] = useState('')
     const pokemons = useSelector(store => store.fetched)
     const dispatch = useDispatch()
+    const [totalPokemon, setTotalPokemon] = useState(0)
+    const [gambarPokemon, setGambarPokemon] = useState(pokeball)
+    const [namaPokemon, setNamaPokemon] = useState('')
+    const [whichButton, setWhichButton] = useState('')
+
+
+    // console.log(pokemons.loading, 'LOADING')
 
     useEffect(() => {
         dispatch(AddPokemon(pokemons.next))
-        // console.log(pokemons.next);
     }, [])
-    useEffect(()=>{
-        console.log(pokemons);
-    }, [pokemons])
 
-// console.log(pokemons, 'ini');
+    // console.log(pokemons.data.slice(-5).map(p => p.name), pokemons.data.length)
+
+    useEffect(() => {
+        setTotalPokemon(pokemons.next.split('?')[1].split('&')[0].split('=')[1])
+    }, [pokemons])
 
     return (
         <View style={styles.container}>
             <View style={styles.topDiv} >
                 <Text style={{ color: 'white' }} >Poke-PrivateDex</Text>
             </View>
-            <View style={{ flex: 3 }} >
-                <Image source={pokeball} style={{ width: 180, height: 180, marginTop: 5 }} />
-            </View>
-            <View style={{ flex: 5, width: "100%" }}>
-                <FlatList
-                    style={{ width: '100%' }}
-                    data={pokemons.data}
-                    renderItem={({ item }) => <HomeCard pokemon={{item}} />}
-                    keyExtractor={(item, i) => i}
+            <View style={{ flex: 3, backgroundColor: '#190061', width: '100%', alignItems: 'center' }} >
+                <Text style={{ color: 'white', fontSize: 20, marginBottom: -10 }}>{namaPokemon}</Text>
+                <Image
+                    fadeDuration={1000}
+                    source={gambarPokemon}
+                    style={{ width: 180, height: 180, marginTop: 5 }}
                 />
             </View>
+            <View style={{ flex: 4, width: "100%" }}>
+                <FlatList
+                    horizontal={false}
+                    // progressViewOffset={10}
+                    numColumns={2}
+                    style={{ width: '100%', backgroundColor: '#0c0032', paddingVertical: 10 }}
+                    data={pokemons.data}
+                    renderItem={({ item }) => <HomeCard
+                        setNamaPokemon={setNamaPokemon}
+                        setGambarPokemon={setGambarPokemon}
+                        pokemon={{ item }}
+                        whichButton={whichButton}
+                        setWhichButton={setWhichButton}
+                    />}
+                    keyExtractor={(item, i) => i.toString()}
+                    onEndReachedThreshold={0.8}
+                    onEndReached={({ distanceFromEnd }) => {
+                        // console.log('mentok');
+                        if (!pokemons.loading && totalPokemon < 964) {
+                            // console.log(totalPokemon, 'ini totalnya lae');
+                            dispatch(AddPokemon(pokemons.next))
+                        }
+                    }}// 
+                />
+            </View>
+            {
+                !pokemons.loading
+                    ? <View></View>
+                    : <View style={{ width: "100%", backgroundColor: '#0c0032', zIndex: 2, position: 'absolute', bottom: 0 }}>
+                        <Text style={{ color: 'white' }}>Load...</Text>
+                    </View>
+            }
         </View>
     )
 }
@@ -58,4 +94,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
-const fake = [1, 2, 3, 4, 6, 7, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 22, 24]
+
+
+// const colorPallate = ['#0c0032', '#190061', '#240090', '#3500d3', '#282828']

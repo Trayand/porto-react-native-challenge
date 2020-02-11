@@ -4,12 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 import HomePage from '../screen/HomePage';
+import TypeList from '../screen/TypeList';
 
 const Tab = createBottomTabNavigator()
-
-function Tes1() {
-    return <Text>Hai</Text>
-}
 
 function Tes3() {
     return <Text>DIAAA</Text>
@@ -21,7 +18,7 @@ export default function RootNavigation() {
             showLabel: false,
             inactiveBackgroundColor: '#f5f5f5'
         }}>
-            <Tab.Screen name="hai" component={Tes1} options={{
+            <Tab.Screen name="hai" component={TypeList} options={{
                 tabBarIcon: () => <MaterialCommunityIcons name="view-list" color="#363cff" size={32} />
             }} />
             <Tab.Screen name="Pokehome" component={HomePage} options={{
