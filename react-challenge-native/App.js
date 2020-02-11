@@ -4,15 +4,18 @@ import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import RootNavigation from './navigators/RootNavigation';
+import store from './store'
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor="red" barStyle="dark-content" />
-      <View style={styles.container}>
-        <RootNavigation />
-      </View>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <StatusBar backgroundColor="red" barStyle="dark-content" />
+        <View style={styles.container}>
+          <RootNavigation />
+        </View>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
