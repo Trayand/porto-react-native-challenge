@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import pokeball from '../assets/pokeball.png'
+import HomeCard from "../components/HomeCard";
 
 export default function HomePage(props) {
 
@@ -9,11 +10,22 @@ export default function HomePage(props) {
             <View style={styles.topDiv} >
                 <Text style={{ color: 'white' }} >Poke-PrivateDex</Text>
             </View>
-            <View style={{ flex: 9 }} >
-                <Text>Test Home Page</Text>
-                <Text>Test Home Page</Text>
+            <View style={{ flex: 3 }} >
+            <Image source={pokeball} style={{width: 180, height: 180, marginTop: 5}} />
             </View>
-            <Image source={pokeball} style={{width: 30, height: '50%'}} />
+            <View style={{flex: 5, width:"100%"}}>
+                <FlatList 
+                    style={{width: '100%'}}
+                    data={fake}
+                    renderItem={({item})=><HomeCard kata={item} />}
+                    keyExtractor={(item, i) => i}
+                />
+                {/* {
+                    fake.map((kata, i) => {
+                        return <HomeCard key={i} kata={kata} />
+                    })
+                } */}
+            </View>
         </View>
     )
 }
@@ -29,10 +41,10 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '10%',
-        backgroundColor: 'blue',
         backgroundColor: '#0742e6',
         opacity: 0.7, /* Add a pointer on hover */
         justifyContent: 'center',
         alignItems: 'center'
     }
 });
+const fake = [1,2,3,4,6,7,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,23,22,24]

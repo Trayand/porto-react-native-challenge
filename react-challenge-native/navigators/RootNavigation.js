@@ -17,7 +17,10 @@ function Tes3() {
 
 export default function RootNavigation() {
     return (
-        <Tab.Navigator initialRouteName="Pokehome">
+        <Tab.Navigator initialRouteName="Pokehome" tabBarOptions={{
+            showLabel: false,
+            inactiveBackgroundColor: '#f5f5f5'
+        }}>
             <Tab.Screen name="hai" component={Tes1} options={{
                 tabBarIcon: () => <MaterialCommunityIcons name="view-list" color="#363cff" size={32} />
             }} />
