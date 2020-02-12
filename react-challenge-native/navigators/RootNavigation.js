@@ -15,6 +15,7 @@ function Tes3() {
 export default function RootNavigation() {
     return (
         <Tab.Navigator initialRouteName="Pokehome" tabBarOptions={{
+            swipeEnabled: true,
             showLabel: false,
             inactiveBackgroundColor: '#f5f5f5',
             inactiveTintColor: 'white',

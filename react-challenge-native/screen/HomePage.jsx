@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, FlatList, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, TextInput, Animated } from 'react-native';
 import pokeball from '../assets/pokeball.png'
 import HomeCard from "../components/HomeCard";
 import { useSelector, useDispatch } from 'react-redux';
 import { AddPokemon } from '../store/actions/PokemonAction';
 
+import { PanGestureHandler, State } from 'react-native-gesture-handler'
 import notfound from '../assets/notfound.png'
 
 export default function HomePage(props) {
-
+    const [left] = useState(new Animated.Value(0))
     // const [nextPage, setNextPage] = useState('')
     const pokemons = useSelector(store => store.fetched)
     const dispatch = useDispatch()
@@ -18,7 +19,12 @@ export default function HomePage(props) {
     const [whichButton, setWhichButton] = useState('')
     const [value, setChangeValue] = React.useState('');
 
-
+    const handlePan = (event) => {
+        left.setValue(event.nativeEvent.translationX)
+        if (event.nativeEvent.translationX > 150) {
+            console.log('sampai', event.nativeEvent.translationX);
+        }
+    }
 
     useEffect(() => {
         dispatch(AddPokemon(pokemons.next))
@@ -70,13 +76,29 @@ export default function HomePage(props) {
                     }}
                 />
             </View>
-            <View style={{ flex: 3, backgroundColor: '#190061', width: '100%', alignItems: 'center' }} >
-                <Text style={{ color: 'white', fontSize: 20, marginBottom: -10 }}>{namaPokemon}</Text>
-                <Image
-                    fadeDuration={1000}
-                    source={gambarPokemon}
-                    style={{ width: 180, height: 180, alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
-                />
+            <View style={{ flex: 3, backgroundColor: '#fff', width: '100%', alignItems: 'center' }} >
+                <PanGestureHandler
+                    onPanResponderTerminate={(e) => console.log(e.nativeEvent.translationX)}
+                    onGestureEvent={handlePan}
+                    onHandlerStateChange={({ nativeEvent }) => {
+                        if (nativeEvent.state === State.END) {
+                            left.setValue(0)
+                        }
+                    }}
+                >
+                    <Animated.View
+                        style={[
+                            styles.container,
+                            { left }
+                        ]}>
+                        <Text style={{ color: 'black', fontSize: 20, marginBottom: -20, marginTop: 10 }}>{namaPokemon}</Text>
+                        <Image
+                            fadeDuration={1000}
+                            source={gambarPokemon}
+                            style={{ width: 180, height: 180, alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+                        />
+                    </Animated.View>
+                </PanGestureHandler>
             </View>
             <View style={{ flex: 4, width: "100%" }}>
                 <FlatList
@@ -111,7 +133,7 @@ export default function HomePage(props) {
                     </View>
             }
 
-        </View>
+        </View >
     )
 }
 
