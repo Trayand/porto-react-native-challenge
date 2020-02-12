@@ -10,7 +10,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <StatusBar backgroundColor="red" barStyle="dark-content" />
+        <StatusBar barStyle="dark-content" backgroundColor="blue" translucent={true} />
         <View style={styles.container}>
           <RootNavigation />
         </View>

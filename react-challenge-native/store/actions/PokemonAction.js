@@ -24,9 +24,19 @@ export const AddPokemon = page => (dispatch, getState) => {
 
 }
 
-export const FetchType = poke_type => (dispatch, getState) => {
-    dispatch({
-        type: FETCH_TYPE,
-        pokemons: poke_type
-    })
+export const FetchType = () => (dispatch, getState) => {
+    // console.log('jalan');
+    fetch(`https://pokeapi.co/api/v2/type`)
+        .then((response) => {
+            return response.json();
+        })
+        .then((myJson) => {
+            // setTypeList(myJson.results)
+            console.log(myJson.results.length);
+            dispatch({
+                type: FETCH_TYPE,
+                TypeList: myJson.results,
+            })
+        })
+        .catch(err => console.log(err))
 }

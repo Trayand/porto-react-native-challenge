@@ -1,46 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import TypeCard from "../components/TypeCard";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { FetchType } from '../store/actions/PokemonAction';
 
 export default function TypeList(props) {
-    const [whichType, setWhichType] = useState('Poke-PrivateDex')
-    const [typeList, setTypeList] = useState([])
+
+    const TypeStore = useSelector(state => state.TypeStore)
+    const dispatch = useDispatch()
     const [listOfPokemon, setListOfPokemon] = useState([])
 
-
     useEffect(() => {
-        fetch('https://pokeapi.co/api/v2/type')
-            .then((response) => {
-                return response.json();
-            })
-            .then((myJson) => {
-                setTypeList(myJson.results)
-                console.log(myJson.results.length);
-            })
-            .catch(err => console.log(err))
+        dispatch(FetchType())
     }, [])
 
     return (
         <View style={styles.container}>
             <View style={styles.topDiv} >
-                <Text style={{ color: 'black' }} >{whichType}</Text>
+                <Text style={{ color: 'black' }} >{}</Text>
             </View>
             <View style={styles.botDiv}>
-                <View style={{ flex: 1 }}>
-                    <FlatList
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        initialScrollIndex={10}
-                        getItemLayout={(data, index) => (
-                            { length: 20, offset: 20 * index, index }
-                        )}
-                        data={typeList}
-                        renderItem={({ item }) => <TypeCard setWhichType={setWhichType} item={item} />}
-                        keyExtractor={(item, i) => i.toString()}
-                    />
+                <View style={{ flex: 1, width: '100%', flexDirection: 'row', flexWrap: 'wrap' }}>
+                    {
+                        TypeStore.TypeList.map((item, i) => {
+                            return <TypeCard key={i} setWhichType={props.setTitle} item={item} />
+                        })
+                    }
                 </View>
-                <View style={{ flex: 9 }}></View>
             </View>
         </View>
     )
@@ -53,6 +39,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        width: '100%'
     },
     topDiv: {
         flex: 1,
@@ -64,6 +51,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     botDiv: {
-        flex: 9
+        flex: 9,
+        width: '100%'
     }
 });

@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'
 
 
 export default function TypeCard(props) {
+    const [test, setTest] = useState('hai carl')
+    const navigation = useNavigation()
 
 
     const handleOnPress = () => {
-        props.setWhichType(props.item.name.toUpperCase())
+        navigation.push('PokeDetail', { item: props.item })
     }
 
     return (
