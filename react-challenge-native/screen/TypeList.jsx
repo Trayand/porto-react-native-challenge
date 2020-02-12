@@ -4,10 +4,11 @@ import TypeCard from "../components/TypeCard";
 
 
 export default function TypeList(props) {
+    const [whichType, setWhichType] = useState('Poke-PrivateDex')
     const [typeList, setTypeList] = useState([])
     const [listOfPokemon, setListOfPokemon] = useState([])
 
-    
+
     useEffect(() => {
         fetch('https://pokeapi.co/api/v2/type')
             .then((response) => {
@@ -23,23 +24,23 @@ export default function TypeList(props) {
     return (
         <View style={styles.container}>
             <View style={styles.topDiv} >
-                <Text style={{ color: 'black' }} >Poke-PrivateDex</Text>
+                <Text style={{ color: 'black' }} >{whichType}</Text>
             </View>
             <View style={styles.botDiv}>
-                <View style={{flex: 1}}>
-                <FlatList
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    initialScrollIndex={10}
-                    getItemLayout={(data, index) => (
-                        {length: 20, offset: 20 * index, index}
-                      )}
-                    data={typeList}
-                    renderItem={({ item }) => <TypeCard item={item}/>}
-                    keyExtractor={(item, i) => i.toString()}
-                />
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        initialScrollIndex={10}
+                        getItemLayout={(data, index) => (
+                            { length: 20, offset: 20 * index, index }
+                        )}
+                        data={typeList}
+                        renderItem={({ item }) => <TypeCard setWhichType={setWhichType} item={item} />}
+                        keyExtractor={(item, i) => i.toString()}
+                    />
                 </View>
-                <View style={{flex: 9}}></View>
+                <View style={{ flex: 9 }}></View>
             </View>
         </View>
     )
