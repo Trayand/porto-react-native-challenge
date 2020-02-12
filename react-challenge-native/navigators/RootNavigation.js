@@ -9,7 +9,11 @@ import TypeStack from './TypeStackNavigator';
 const Tab = createBottomTabNavigator()
 
 function Tes3() {
-    return <Text>DIAAA</Text>
+    return (
+        <View>
+            <Text>Saved Pokemon</Text>
+            <Text>Not Yet.. Coming Soon...</Text>
+        </View>)
 }
 
 export default function RootNavigation() {
