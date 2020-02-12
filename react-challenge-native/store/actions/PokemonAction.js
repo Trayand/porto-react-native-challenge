@@ -35,7 +35,7 @@ export const FetchType = () => (dispatch, getState) => {
             console.log(myJson.results.length);
             dispatch({
                 type: FETCH_TYPE,
-                TypeList: myJson.results,
+                TypeList: myJson.results.slice(0, -2),
             })
         })
         .catch(err => console.log(err))

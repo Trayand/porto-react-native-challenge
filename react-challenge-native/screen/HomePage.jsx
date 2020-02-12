@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, TextInput } from 'react-native';
 import pokeball from '../assets/pokeball.png'
 import HomeCard from "../components/HomeCard";
 import { useSelector, useDispatch } from 'react-redux';
 import { AddPokemon } from '../store/actions/PokemonAction';
+
+import notfound from '../assets/notfound.png'
 
 export default function HomePage(props) {
 
@@ -14,31 +16,66 @@ export default function HomePage(props) {
     const [gambarPokemon, setGambarPokemon] = useState(pokeball)
     const [namaPokemon, setNamaPokemon] = useState('')
     const [whichButton, setWhichButton] = useState('')
+    const [value, setChangeValue] = React.useState('');
 
 
-    // console.log(pokemons.loading, 'LOADING')
 
     useEffect(() => {
         dispatch(AddPokemon(pokemons.next))
     }, [])
 
-    // console.log(pokemons.data.slice(-5).map(p => p.name), pokemons.data.length)
 
     useEffect(() => {
         setTotalPokemon(pokemons.next.split('?')[1].split('&')[0].split('=')[1])
     }, [pokemons])
 
+    const onChangeValue = text => {
+        setChangeValue(text)
+    }
+    const onHandleSearch = () => {
+        fetch(`https://pokeapi.co/api/v2/pokemon/${value.toLowerCase()}`)
+            .then(res => res.json())
+            .then((myJson) => {
+                setGambarPokemon({ uri: myJson.sprites.front_default });
+                setNamaPokemon(value.toLowerCase())
+            })
+            .catch(err => {
+                setNamaPokemon('There are no "' + value.toLowerCase() + '"')
+                setGambarPokemon(notfound)
+            })
+        setChangeValue('')
+    }
+
     return (
+
         <View style={styles.container}>
             <View style={styles.topDiv} >
                 <Text style={{ color: 'white' }} >Poke-PrivateDex</Text>
+                <TextInput
+                    style={{
+                        width: '80%',
+                        height: 40,
+                        color: 'white',
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        borderRadius: 50
+
+                    }}
+                    onChangeText={text => onChangeValue(text)}
+                    value={value}
+                    onEndEditing={() => {
+                        onHandleSearch()
+                    }}
+                />
             </View>
             <View style={{ flex: 3, backgroundColor: '#190061', width: '100%', alignItems: 'center' }} >
                 <Text style={{ color: 'white', fontSize: 20, marginBottom: -10 }}>{namaPokemon}</Text>
                 <Image
                     fadeDuration={1000}
                     source={gambarPokemon}
-                    style={{ width: 180, height: 180, marginTop: 5 }}
+                    style={{ width: 180, height: 180, alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
                 />
             </View>
             <View style={{ flex: 4, width: "100%" }}>
@@ -73,6 +110,7 @@ export default function HomePage(props) {
                         <Text style={{ color: 'white' }}>Load...</Text>
                     </View>
             }
+
         </View>
     )
 }
@@ -92,7 +130,7 @@ const styles = StyleSheet.create({
         opacity: 0.7, /* Add a pointer on hover */
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
 });
 
 

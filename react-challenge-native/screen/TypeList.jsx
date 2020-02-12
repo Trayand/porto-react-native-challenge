@@ -8,7 +8,7 @@ export default function TypeList(props) {
 
     const TypeStore = useSelector(state => state.TypeStore)
     const dispatch = useDispatch()
-    const [listOfPokemon, setListOfPokemon] = useState([])
+    // const [listOfPokemon, setListOfPokemon] = useState([])
 
     useEffect(() => {
         dispatch(FetchType())
@@ -17,15 +17,31 @@ export default function TypeList(props) {
     return (
         <View style={styles.container}>
             <View style={styles.topDiv} >
-                <Text style={{ color: 'black' }} >{}</Text>
+                <Text style={{ color: 'whitesmoke', fontSize: 18 }} >Poke-Dex Types</Text>
             </View>
             <View style={styles.botDiv}>
-                <View style={{ flex: 1, width: '100%', flexDirection: 'row', flexWrap: 'wrap' }}>
-                    {
-                        TypeStore.TypeList.map((item, i) => {
-                            return <TypeCard key={i} setWhichType={props.setTitle} item={item} />
-                        })
-                    }
+                <View style={{ width: '100%', flex: 1 }}>
+                    <FlatList
+                        columnWrapperStyle={{
+                            justifyContent: 'space-around',
+                        }}
+                        contentContainerStyle={{ justifyContent: 'space-around', flex: 1, backgroundColor: '#2c00b0' }}
+                        numColumns={4}
+                        data={TypeStore.TypeList}
+                        renderItem={({ item }) =>
+                            <TypeCard
+                                setWhichType={props.setTitle}
+                                item={item}
+                                style={{
+                                    height: 40,
+                                    backgroundColor: '#3500d3',
+                                    elevation: 10, // Android
+                                    borderWidth: 0.5,
+                                }}
+                            />
+                        }
+                        keyExtractor={(item, i) => i.toString()}
+                    />
                 </View>
             </View>
         </View>
@@ -46,7 +62,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '10%',
         backgroundColor: '#0742e6',
-        opacity: 0.7, /* Add a pointer on hover */
+        opacity: 0.9, /* Add a pointer on hover */
         justifyContent: 'center',
         alignItems: 'center'
     },
